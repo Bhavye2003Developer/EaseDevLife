@@ -1,0 +1,13 @@
+.snapshots {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+iframe {
+  transform: scale(0.8);
+  transform-origin: 0 0;
+  object-fit: fill;
+  width: 900px;
+  height: 500px;
+  overflow: hidden;
+}
