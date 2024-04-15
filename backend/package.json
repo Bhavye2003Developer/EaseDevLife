@@ -9,6 +9,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "lodash": "^4.17.21"
+    "express": "^4.19.2",
+    "ffmpeg": "^0.0.4",
+    "jsdom": "^24.0.0",
+    "lodash": "^4.17.21",
+    "playwright": "^1.43.1",
+    "puppeteer": "^22.6.4",
+    "puppeteer-screen-recorder": "^3.0.3"
   }
 }

@@ -1,46 +1,106 @@
-const _ = require("lodash");
+const express = require("express");
+const puppeteer = require("puppeteer");
+const { PuppeteerScreenRecorder } = require("puppeteer-screen-recorder");
 
-// returns nearest snapshot INFO
-const checkWebsiteAvailability = async (URL) => {
-  const WAYBACK_AVAILABILITY_API = "http://archive.org/wayback/available?url=";
-  const response = await fetch(`${WAYBACK_AVAILABILITY_API}${URL}`);
-  const json = await response.json();
-  return _.isEmpty(json.archived_snapshots)
-    ? null
-    : json.archived_snapshots.closest.url;
-};
+const app = express();
 
-const getSnapShots = async (
-  URL = "https://browserless.io",
-  // to, from in YYYYMMDDHHMMSS
-  FROM = 2023,
-  TO = 2024
-) => {
-  const WAYBACK_USERSITE_URL = await checkWebsiteAvailability(URL);
-  if (WAYBACK_USERSITE_URL) {
-    const response = await fetch(
-      `http://web.archive.org/cdx/search/cdx?url=${URL}&from=${FROM}&to=${TO}&filter=statuscode:200&filter=mimetype:text/html&output=json&limit=20`
-    );
-    const json = await response.json();
-    return {
-      data: json,
-      status: 0,
-    };
+app.use(express.json());
+
+app.get("/image", async (req, res) => {
+  const url = req.query.url;
+  if (url) {
+    let browser = null;
+    return await puppeteer
+      .launch({
+        headless: false,
+      })
+      .then(async (browser) => {
+        const page = await browser.newPage();
+        await page.goto(url);
+        const screenshot = await page
+          .screenshot
+          // { fullPage: true }
+          ();
+        res.end(screenshot, "binary");
+      })
+      .catch((error) => {
+        if (!res.headersSent) {
+          res.status(400).send(error.message);
+        }
+      })
+      .finally(() => browser && browser.close());
   }
-  return {
-    data: [],
-    status: 1,
-  }; // error occured
-};
+  return res.send("No url provided");
+});
 
-const getSnapShotURLs = async (URL) => {
-  const snapshots = await getSnapShots(URL);
+app.get("/record", async (req, res) => {
+  const Config = {
+    followNewTab: true,
+    fps: 30,
+    videoFrame: {
+      width: 1024,
+      height: 768,
+    },
+    videoCrf: 18,
+    videoCodec: "libx264",
+    videoPreset: "slow",
+    videoBitrate: 1000,
+    autopad: {
+      color: "black" | "#35A5FF",
+    },
+    aspectRatio: "16:9",
+  };
 
-  const snapShotUrls = snapshots.data.slice(1).map((snapshot) => {
-    const timestamp = snapshot[1];
-    const url = `https://web.archive.org/web/${timestamp}/${URL}`;
-    return { timestamp, url };
+  return await puppeteer
+    .launch({
+      headless: false,
+    })
+    .then(async (browser) => {
+      const page = await browser.newPage();
+      const recorder = new PuppeteerScreenRecorder(page, Config);
+      await recorder.start("./simple.mp4"); // supports extension - mp4, avi, webm and mov
+
+      const urls = [
+        "https://www.browserless.io/",
+        "https://docs.browserless.io/",
+        "https://docs.browserless.io/migrate",
+        "https://docs.browserless.io/Hosted-Service/how-it-works",
+      ];
+
+      for (const url of urls) {
+        await page.goto(url);
+        await autoScroll(page);
+      }
+
+      await recorder.stop();
+      await browser.close();
+
+      res.send("completed");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+  // Create a new page
+});
+
+async function autoScroll(page) {
+  await page.evaluate(async () => {
+    await new Promise((resolve) => {
+      var totalHeight = 0;
+      var distance = 100;
+      var timer = setInterval(() => {
+        var scrollHeight = document.body.scrollHeight;
+        window.scrollBy(0, distance);
+        totalHeight += distance;
+
+        if (totalHeight >= scrollHeight - window.innerHeight) {
+          clearInterval(timer);
+          resolve();
+        }
+      }, 100);
+    });
   });
+}
 
-  return snapShotUrls;
-};
+app.listen(8080, () => console.log("Listening on PORT: 8080"));
