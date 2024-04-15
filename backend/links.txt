@@ -1,1 +1,1 @@
-["/#","/recover","/pages","/reg","/login","/lite","/watch","/places","/games","/marketplace","/fundraisers","/biz","/votinginformationcenter","/privacy","/groups","/ad_campaign","/?ref=pf","/careers","/policies","/help","/policies?ref=pf","/settings","/allactivity?privacy_source=activity_log_top_menu"]
+["/#","/recover","/pages","/reg","/login","/lite","/watch","/places","/games","/marketplace","/fundraisers","/biz","/votinginformationcenter","/privacy","/groups","/careers","/policies","/help","/settings"]

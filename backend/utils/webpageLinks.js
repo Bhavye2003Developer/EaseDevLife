@@ -20,7 +20,12 @@ const getAllLinks = async (url) => {
       a_array.forEach((link) => {
         const origin = window.location.origin;
         const path = link.href.slice(origin.length).split("/")[1];
-        if (path && !paths.includes("/" + path)) paths.push("/" + path);
+        if (
+          path &&
+          !paths.includes("/" + path) &&
+          !path.split("").some((char) => "?=_".split("").includes(char))
+        )
+          paths.push("/" + path);
       });
       return paths;
     });
