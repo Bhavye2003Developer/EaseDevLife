@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "Backend for webPast",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "scripts": {},
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -14,8 +12,13 @@
     "ffmpeg": "^0.0.4",
     "jsdom": "^24.0.0",
     "lodash": "^4.17.21",
+    "pdf-lib": "^1.17.1",
     "playwright": "^1.43.1",
     "puppeteer": "^22.6.4",
     "puppeteer-screen-recorder": "^3.0.3"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.43.1",
+    "@types/node": "^20.12.7"
   }
 }

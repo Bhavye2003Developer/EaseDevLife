@@ -4,6 +4,7 @@ const { PuppeteerScreenRecorder } = require("puppeteer-screen-recorder");
 const { Config, autoScroll } = require("./utils/constants");
 const cors = require("cors");
 const path = require("path");
+const { getPdf } = require("./utils/webPDF");
 
 const app = express();
 
@@ -12,30 +13,26 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "/videos")));
 app.use(cors());
 
-app.get("/image", async (req, res) => {
-  const url = req.query.url;
-  if (url) {
-    let browser = null;
-    return await puppeteer
-      .launch({
-        headless: false,
-      })
-      .then(async (browser) => {
-        const page = await browser.newPage();
-        await page.goto(url);
-        const screenshot = await page
-          .screenshot
-          // { fullPage: true }
-          ();
-        res.end(screenshot, "binary");
-      })
-      .catch((error) => {
-        if (!res.headersSent) {
-          res.status(400).send(error.message);
-        }
-      })
-      .finally(() => browser && browser.close());
+app.post("/pdf", async (req, res) => {
+  const { urls } = req.body;
+  console.log(urls);
+
+  try {
+    const mergedPDFfilePath = await getPdf("../backend/public/pdfs/", urls);
+    return res.sendFile(`pdfs/${mergedPDFfilePath}`, {
+      root: path.join(__dirname, "public"),
+    });
+
+    // const pathy = "pdfs/final@github.com&&.pdf";
+    // return res.sendFile(pathy, {
+    //   root: path.join(__dirname, "public"),
+    // });
+  } catch (err) {
+    console.log("server error: ");
+    console.log(err);
+    res.sendStatus(500);
   }
+
   return res.send("No url provided");
 });
 
