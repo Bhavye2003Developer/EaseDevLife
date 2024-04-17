@@ -67,7 +67,12 @@ const PDFViewer = () => {
         GENERATE PDF
       </button>
 
-      {pdfURL ? <PDFdocument path={pdfURL} /> : null}
+      {/* {pdfURL ? <PDFdocument path={pdfURL} /> : null} */}
+      <PDFdocument
+        path={
+          "https://www.cs.toronto.edu/~mashiyat/csc309/Lectures/javascript.pdf"
+        }
+      />
     </div>
   );
 };

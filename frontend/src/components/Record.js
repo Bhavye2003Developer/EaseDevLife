@@ -1,10 +1,17 @@
 import { useState } from "react";
+import Video from "./Video";
 
 const Record = () => {
+  const [urls, setUrls] = useState([]);
   const [url, setUrl] = useState("");
-  const [paths, setPaths] = useState([]);
-  const [urlPath, setUrlPath] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
+
+  const handleAddURL = () => {
+    if (url) {
+      setUrls([...urls, url]);
+    }
+    setUrl("");
+  };
 
   const sendUrlInfo = async () => {
     const response = await fetch(
@@ -16,7 +23,7 @@ const Record = () => {
           "Content-Type": "application/json",
           Accept: "video/mp4",
         },
-        body: JSON.stringify({ url, urlPaths: paths }),
+        body: JSON.stringify({ urls }),
       }
     );
     const contentType = response.headers.get("content-type");
@@ -33,66 +40,52 @@ const Record = () => {
   };
 
   return (
-    <div className="flex flex-col justify-start h-screen items-start m-20">
-      <input
-        type="text"
-        placeholder="Enter URL"
-        value={url}
-        onChange={(e) => setUrl(e.target.value)}
-        className="w-80 px-4 py-2 mb-4 rounded-md border focus:outline-none focus:ring focus:border-blue-300"
-      />
-      {paths.length !== 0 ? (
-        <ul className="mb-4">
-          {paths.map((path, index) => (
-            <li key={index} className="mb-1">
-              {path}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className="mb-4 text-gray-500">No paths provided</p>
-      )}
-      <div className="flex items-start">
-        <input
-          type="text"
-          value={urlPath}
-          placeholder="Enter path"
-          onChange={(e) => setUrlPath(e.target.value)}
-          className="w-60 px-4 py-2 mr-2 rounded-md border focus:outline-none focus:ring focus:border-blue-300"
-        />
+    <div className="flex items-start h-dvh pt-20 bg-gray-900">
+      <div className="flex flex-col mr-10 pl-48">
+        <div className="w-96 h-52 bg-gray-400 my-5 p-2 overflow-y-auto overflow-x-auto scrollbar">
+          <div className="flex flex-wrap flex-col">
+            {urls.map((url, index) => (
+              <span key={index}>{url}</span>
+            ))}
+          </div>
+        </div>
+        <div className="flex items-start">
+          <input
+            type="text"
+            value={url}
+            placeholder="Enter path"
+            onChange={(e) => setUrl(e.target.value)}
+            onKeyUp={(e) => {
+              if (e.key === "Enter") handleAddURL();
+            }}
+            className="w-60 px-4 py-2 mr-2 rounded-md border focus:outline-none focus:ring focus:border-blue-300 bg-gray-700 text-white"
+          />
+          <button
+            onClick={() => {
+              handleAddURL();
+            }}
+            className="w-full px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:bg-blue-600"
+          >
+            ADD URL
+          </button>
+        </div>
         <button
           onClick={() => {
-            if (urlPath) {
-              setPaths([...paths, urlPath]);
-            }
-            setUrlPath("");
+            if (urls.length > 0) sendUrlInfo();
           }}
-          className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:bg-blue-600"
+          className="mt-4 px-6 py-3 text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:bg-green-600"
         >
-          ADD PATH
+          MAKE A VIDEO
         </button>
       </div>
-      <button
-        onClick={() => {
-          if (url) sendUrlInfo();
-        }}
-        className="mt-4 px-6 py-3 text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:bg-green-600"
-      >
-        MAKE A VIDEO
-      </button>
 
-      {videoUrl ? (
-        <video
-          width="750"
-          height="400"
-          controls
-          className="mt-8 border border-black"
-        >
-          <source src={videoUrl} type="video/mp4" />
-        </video>
-      ) : (
-        <p className="mt-8 text-gray-500">No video</p>
-      )}
+      <div className="flex justify-center items-center">
+        {videoUrl ? (
+          <Video url={videoUrl} />
+        ) : (
+          <p className="mt-8 text-white">No video</p>
+        )}
+      </div>
     </div>
   );
 };

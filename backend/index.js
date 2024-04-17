@@ -41,7 +41,8 @@ app.post("/record", async (req, res) => {
 
   const video_path = "./public/videos/user1.mp4";
 
-  const { url, urlPaths } = req.body;
+  const { urls } = req.body;
+  console.log(urls);
 
   return await puppeteer
     .launch({
@@ -52,8 +53,8 @@ app.post("/record", async (req, res) => {
       const recorder = new PuppeteerScreenRecorder(page, Config);
       await recorder.start(video_path);
 
-      for (const urlPath of urlPaths) {
-        await page.goto(url + urlPath);
+      for (const url of urls) {
+        await page.goto(url);
         await autoScroll(page);
       }
       await recorder.stop();
