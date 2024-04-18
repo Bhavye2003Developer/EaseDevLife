@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 const Typewriter = () => {
   const lines = [
     "Bring your vision to life, effortlessly! With our intuitive tool",
-    "Transforming URLs into engaging videos and beautifully crafted PDFs is as easy as a few clicks – no tech wizardry required.",
+    "Transforming URLs into engaging videos and beautifully crafted PDFs is as easy as a few clicks",
   ];
 
   const [index, setIndex] = useState(0);
@@ -13,7 +13,6 @@ const Typewriter = () => {
 
   useEffect(() => {
     if (index === 0 && IsDisplayed) {
-      console.log(index);
       if (lineIndex === lines.length - 1) setLineIndex(0);
       else setLineIndex(lineIndex + 1);
       setIsDisplayed(false);
@@ -25,15 +24,17 @@ const Typewriter = () => {
     setlineToBeDisplayed(lines[lineIndex].substring(0, index));
   }, [index]);
 
-  useEffect(() => {}, [lineIndex]);
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (IsDisplayed) {
+        setIndex(index - 1);
+      } else {
+        setIndex(index + 1);
+      }
+    }, 50); // Initial timeout
 
-  setTimeout(() => {
-    if (IsDisplayed) {
-      setIndex(index - 1);
-    } else {
-      setIndex(index + 1);
-    }
-  }, 50);
+    return () => clearTimeout(timeout);
+  }, [index, IsDisplayed]);
 
   return (
     <h1 className="text-4xl font-bold text-white mb-6">{lineToBeDisplayed}</h1>

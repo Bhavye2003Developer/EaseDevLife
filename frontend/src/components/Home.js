@@ -1,19 +1,24 @@
 import React from "react";
 import { motion } from "framer-motion";
-import Typewriter from "../Typewritter";
+import Typewriter from "./Typewritter";
 import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
-    <div className="flex flex-col items-center justify-center h-dvh text-white bg-gray-900">
+    <div className="flex flex-col items-center justify-center mt-52 text-white bg-gray-900">
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="max-w-4xl text-center"
+        className="max-w-4xl text-center relative"
       >
-        <Typewriter />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="text-center relative flex items-center justify-center">
+          <div className="absolute ">
+            <Typewriter />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-32">
           <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

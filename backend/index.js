@@ -38,12 +38,8 @@ app.post("/pdf", async (req, res) => {
 
 app.post("/record", async (req, res) => {
   console.log("requested");
-
   const video_path = "./public/videos/user1.mp4";
-
   const { urls } = req.body;
-  console.log(urls);
-
   return await puppeteer
     .launch({
       headless: false,
@@ -53,22 +49,25 @@ app.post("/record", async (req, res) => {
       const recorder = new PuppeteerScreenRecorder(page, Config);
       await recorder.start(video_path);
 
-      for (const url of urls) {
-        await page.goto(url);
-        await autoScroll(page);
+      try {
+        for (const url of urls) {
+          await page.goto(url);
+          await autoScroll(page);
+        }
+        await recorder.stop();
+        await browser.close();
+      } catch (err) {
+        console.log("Error occurred!");
+        await recorder.stop();
+        await browser.close();
+        return res.send("not able to process video!!!");
       }
-      await recorder.stop();
-      await browser.close();
 
       console.log("sending file");
 
       return res.sendFile("videos/user1.mp4", {
         root: path.join(__dirname, "public"),
       });
-    })
-    .catch((err) => {
-      console.log(err);
-      return res.send("not able to process video!!!");
     });
 });
 

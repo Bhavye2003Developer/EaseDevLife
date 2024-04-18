@@ -8,7 +8,7 @@ import Error from "./components/Error";
 
 const App = () => {
   return (
-    <div className="bg-gray-800">
+    <div className="bg-gray-900 h-[100vh]">
       <Header />
       <div>
         <Outlet />
