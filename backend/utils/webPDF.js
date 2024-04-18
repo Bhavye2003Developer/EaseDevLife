@@ -60,8 +60,6 @@ const getPdf = async (dirPath, urlsPaths) => {
     for (const urlPathIndex in urlsPaths.slice(1)) {
       const origin = new URL(urlsPaths[+urlPathIndex + 1]).hostname;
       const path = dirPath + `${origin}-${+urlPathIndex + 1}.pdf`;
-
-      console.log(path);
       await mergePDF(firstdirPath, path, firstdirPath);
       fs.unlinkSync(path);
     }
@@ -74,10 +72,12 @@ const getPdf = async (dirPath, urlsPaths) => {
     finalFileName += ".pdf";
 
     fs.renameSync(firstdirPath, dirPath + finalFileName);
+    console.log("intermediate: ", finalFileName);
     return finalFileName;
   } catch (err) {
     console.log("Error occured!");
     console.log(err);
+    return null;
   }
 };
 

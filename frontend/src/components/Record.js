@@ -61,57 +61,64 @@ const Record = () => {
   };
 
   return (
-    <div className="flex items-start pt-20 bg-gray-900 ml-20">
-      <div className="flex flex-col mr-10 pl-48">
-        <div className="w-96 h-52 bg-gray-800 my-5 p-2 overflow-y-auto overflow-x-auto scrollbar rounded-xl shadow-md">
-          <div className="flex flex-col">
-            {urls.map((url, index) => (
-              <div
-                key={index}
-                className="flex items-center mb-1 text-white text-lg cursor-pointer transition duration-300 hover:text-red-500"
-                onClick={() => handleRemoveURL(index)}
-              >
-                <span className="mr-2">{index + 1}. </span>
-                <span>{url}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="flex items-start">
-          <input
-            type="text"
-            value={url}
-            placeholder="Enter URL"
-            onChange={(e) => setUrl(e.target.value)}
-            onKeyUp={(e) => {
-              if (e.key === "Enter") handleAddURL();
-            }}
-            className="w-60 px-4 py-2 mr-2 rounded-md border focus:outline-none focus:ring focus:border-blue-300 bg-gray-700 text-white"
-          />
-          <button
-            onClick={handleAddURL}
-            className="w-full px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:bg-blue-600"
-          >
-            ADD URL
-          </button>
-        </div>
-        <button
-          onClick={sendUrlInfo}
-          className="mt-4 px-6 py-3 text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:bg-green-600"
-        >
-          MAKE A VIDEO
-        </button>
-        {errorMessage && (
-          <div className="mt-2 text-red-500">{errorMessage}</div>
-        )}
+    <div>
+      <div className="flex justify-center pt-10">
+        <h1 className="text-3xl font-semibold mb-6 text-white">
+          Webpage Demo Generator - Video Tool
+        </h1>
       </div>
+      <div className="flex items-start pt-5 bg-gray-900 ml-20">
+        <div className="flex flex-col mr-10 pl-48">
+          <div className="w-96 h-52 bg-gray-800 my-5 p-2 overflow-y-auto overflow-x-auto scrollbar rounded-xl shadow-md">
+            <div className="flex flex-col">
+              {urls.map((url, index) => (
+                <div
+                  key={index}
+                  className="flex items-center mb-1 text-white text-lg cursor-pointer transition duration-300 hover:text-red-500"
+                  onClick={() => handleRemoveURL(index)}
+                >
+                  <span className="mr-2">{index + 1}. </span>
+                  <span>{url}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="flex items-start">
+            <input
+              type="text"
+              value={url}
+              placeholder="Enter URL"
+              onChange={(e) => setUrl(e.target.value)}
+              onKeyUp={(e) => {
+                if (e.key === "Enter") handleAddURL();
+              }}
+              className="w-60 px-4 py-2 mr-2 rounded-md border focus:outline-none focus:ring focus:border-blue-300 bg-gray-700 text-white"
+            />
+            <button
+              onClick={handleAddURL}
+              className="w-full px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:bg-blue-600"
+            >
+              ADD URL
+            </button>
+          </div>
+          <button
+            onClick={sendUrlInfo}
+            className="mt-4 px-6 py-3 text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none focus:ring focus:bg-green-600"
+          >
+            MAKE A VIDEO
+          </button>
+          {errorMessage && (
+            <div className="mt-2 text-red-500">{errorMessage}</div>
+          )}
+        </div>
 
-      <div className="flex justify-center items-center">
-        {isLoading ? (
-          <ShimmerVideo />
-        ) : (
-          videoUrl && !errorMessage && <Video url={videoUrl} />
-        )}
+        <div className="flex justify-center items-center">
+          {isLoading ? (
+            <ShimmerVideo />
+          ) : (
+            videoUrl && !errorMessage && <Video url={videoUrl} />
+          )}
+        </div>
       </div>
     </div>
   );
