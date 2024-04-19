@@ -36,35 +36,30 @@ app.post("/record", async (req, res) => {
   console.log("requested");
   const video_path = "./public/videos/user1.mp4";
   const { urls } = req.body;
-  return await puppeteer
-    .launch({
-      headless: false,
-    })
-    .then(async (browser) => {
-      const page = await browser.newPage();
-      const recorder = new PuppeteerScreenRecorder(page, Config);
-      await recorder.start(video_path);
+  return await puppeteer.launch({ headless: true }).then(async (browser) => {
+    const page = await browser.newPage();
+    const recorder = new PuppeteerScreenRecorder(page, Config);
+    await recorder.start(video_path);
 
-      try {
-        for (const url of urls) {
-          await page.goto(url);
-          await autoScroll(page);
-        }
-        await recorder.stop();
-        await browser.close();
-      } catch (err) {
-        console.log("Error occurred!");
-        await recorder.stop();
-        await browser.close();
-        return res.send("not able to process video!!!");
+    try {
+      for (const url of urls) {
+        await page.goto(url);
+        await autoScroll(page);
       }
-
+      await recorder.stop();
+      await browser.close();
       console.log("sending file");
 
       return res.sendFile("videos/user1.mp4", {
         root: path.join(__dirname, "public"),
       });
-    });
+    } catch (err) {
+      console.log("Error occurred!");
+      await recorder.stop();
+      await browser.close();
+      return res.send("not able to process video!!!");
+    }
+  });
 });
 
 app.listen(8080, () => console.log("Listening on PORT: 8080"));

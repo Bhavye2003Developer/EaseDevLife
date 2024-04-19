@@ -44,6 +44,7 @@ const PDFViewer = () => {
       });
 
       const PDFdata = await response.arrayBuffer();
+
       const blob = new Blob([PDFdata], { type: "application/pdf" });
       const pdf_blob_url = URL.createObjectURL(blob);
       setPDFurl(pdf_blob_url);

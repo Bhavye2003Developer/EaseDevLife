@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const Typewriter = () => {
-  const lines = [
-    "Bring your vision to life, effortlessly! With our intuitive tool",
-    "Transforming URLs into engaging videos and beautifully crafted PDFs is as easy as a few clicks",
-  ];
-
+const Typewriter = ({ lines }) => {
   const [index, setIndex] = useState(0);
   const [lineToBeDisplayed, setlineToBeDisplayed] = useState("");
   const [IsDisplayed, setIsDisplayed] = useState(false);

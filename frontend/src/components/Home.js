@@ -14,7 +14,12 @@ const Home = () => {
       >
         <div className="text-center relative flex items-center justify-center">
           <div className="absolute ">
-            <Typewriter />
+            <Typewriter
+              lines={[
+                "Bring your vision to life, effortlessly! With our intuitive tool",
+                "Transforming URLs into engaging videos and beautifully crafted PDFs is as easy as a few clicks",
+              ]}
+            />
           </div>
         </div>
 

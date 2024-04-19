@@ -36,14 +36,21 @@ const mergePDF = async (pdf1Path, pdf2Path, mergePath) => {
 //   "../public/pdfs/www.amazon.com-1.pdf"
 // );
 
-const getPdf = async (dirPath, urlsPaths) => {
+const wait = (msec) =>
+  new Promise((resolve, _) => {
+    setTimeout(resolve, msec);
+  });
+
+const getPdf = async (dirPath, urls) => {
   try {
-    const browser = await puppeteer.launch({ headless: false });
+    const browser = await puppeteer.connect({
+      browserWSEndpoint: "ws://localhost:3000",
+    });
     const page = await browser.newPage();
     await page.setViewport({ width: 1080, height: 1024 });
-    for (const urlPathIndex in urlsPaths) {
-      const origin = new URL(urlsPaths[urlPathIndex]).hostname;
-      await page.goto(urlsPaths[urlPathIndex], { waitUntil: "networkidle2" });
+    for (const urlPathIndex in urls) {
+      const origin = new URL(urls[urlPathIndex]).hostname;
+      await page.goto(urls[urlPathIndex], { waitUntil: "networkidle0" });
 
       await page.pdf({
         path: dirPath + `${origin}-${urlPathIndex}.pdf`,
@@ -54,18 +61,22 @@ const getPdf = async (dirPath, urlsPaths) => {
     browser.close();
     console.log("indivisual pdfs done...");
 
-    const origin = new URL(urlsPaths[0]).hostname;
+    const origin = new URL(urls[0]).hostname;
     const firstdirPath = dirPath + `${origin}-${0}.pdf`;
 
-    for (const urlPathIndex in urlsPaths.slice(1)) {
-      const origin = new URL(urlsPaths[+urlPathIndex + 1]).hostname;
+    for (const urlPathIndex in urls.slice(1)) {
+      const origin = new URL(urls[+urlPathIndex + 1]).hostname;
       const path = dirPath + `${origin}-${+urlPathIndex + 1}.pdf`;
       await mergePDF(firstdirPath, path, firstdirPath);
       fs.unlinkSync(path);
     }
 
+    console.log("waiting...");
+    await wait(3000);
+    console.log("waiting complete");
+
     let finalFileName = "final@";
-    for (const url of urlsPaths) {
+    for (const url of urls) {
       const hostname = new URL(url).hostname;
       finalFileName += hostname + "&&";
     }
@@ -81,7 +92,7 @@ const getPdf = async (dirPath, urlsPaths) => {
   }
 };
 
-// getPdf("../public/pdfs/", [
+// getPdf("public/pdfs/", [
 //   "https://www.google.com",
 //   "https://browserless.io/",
 //   "https://react.dev/",
