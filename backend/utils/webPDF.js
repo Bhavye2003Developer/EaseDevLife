@@ -44,7 +44,7 @@ const wait = (msec) =>
 const getPdf = async (dirPath, urls) => {
   try {
     const browser = await puppeteer.connect({
-      browserWSEndpoint: "ws://localhost:3000",
+      browserWSEndpoint: "ws://localhost:3172",
     });
     const page = await browser.newPage();
     await page.setViewport({ width: 1080, height: 1024 });

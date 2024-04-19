@@ -18,7 +18,7 @@ app.post("/pdf", async (req, res) => {
   console.log("processing...", urls);
 
   try {
-    const mergedPDFfilePath = await getPdf("../backend/public/pdfs/", urls);
+    const mergedPDFfilePath = await getPdf("public/pdfs/", urls);
     if (mergedPDFfilePath) {
       console.log("final: ", mergedPDFfilePath);
       return res.sendFile(`pdfs/${mergedPDFfilePath}`, {

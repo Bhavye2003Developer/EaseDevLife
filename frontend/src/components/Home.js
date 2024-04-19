@@ -35,7 +35,7 @@ const Home = () => {
             <p className="mb-4">
               Turn any website URL into a captivating video presentation.
             </p>
-            <Link to={"/record"}>
+            <Link to={"/video"}>
               <button className="inline-block bg-blue-500 text-white px-4 py-2 rounded-md transition duration-300 hover:bg-blue-600">
                 Get Started
               </button>
