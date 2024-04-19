@@ -1,25 +1,35 @@
 # EaseDevLife
 
 ## Overview
+
 EaseDevLife automates the process of creating demos for web applications and generating PDFs from URLs. It simplifies the task of creating demo videos by taking URLs as input and generating a video showcasing how each webpage looks. Additionally, it provides functionality to generate PDF files by combining multiple URLs.
 
 ## Tech Stack
+
 - **Frontend**: React for building the user interface.
 - **Backend**: Node.js for server-side logic and API endpoints.
 - **Browser Automation**: Browserless for headless browser sessions to capture webpage screenshots.
 - **PDF Generation**: PDF file format for creating documents from web content.
+- **Containerization**: Docker for running Chromium headlessly in a container for PDF generation.
+
+_Docker must be installed to execute the project, as it is used to manage and run Chromium headlessly within a container for PDF generation._
 
 ## Installation
+
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/Bhavye2003Developer/EaseDevLife.git
+   ```
 
 2. Navigate to the project directory:
+
    ```bash
    cd EaseDevLife
    ```
 
 3. Execute the setup script:
+
    ```bash
    ./setup.sh
    ```
@@ -37,18 +47,24 @@ EaseDevLife automates the process of creating demos for web applications and gen
      ```
 
 ## Usage
+
 Once the installation and setup are complete, you can access the project at the following URLs:
+
 - Frontend (React): [http://localhost:1234](http://localhost:1234)
 - Backend (Node.js): [http://localhost:8080](http://localhost:8080)
 
 ### Frontend
+
 The frontend provides a user interface where you can input URLs to generate demo videos and PDFs.
 
 ### Backend
+
 The backend server handles the requests from the frontend, processes the URLs, and generates demo videos using browser automation and PDFs from URLs.
 
 ## Contributing
+
 Contributions are welcome! Please feel free to fork the repository, make changes, and submit a pull request.
 
 ## License
+
 This project is licensed under the [MIT License](LICENSE).
