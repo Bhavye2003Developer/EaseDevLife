@@ -4,6 +4,8 @@
 
 EaseDevLife automates the process of creating demos for web applications and generating PDFs from URLs. It simplifies the task of creating demo videos by taking URLs as input and generating a video showcasing how each webpage looks. Additionally, it provides functionality to generate PDF files by combining multiple URLs.
 
+https://github.com/Bhavye2003Developer/EaseDevLife/assets/110657263/f7d521d9-752f-42ab-92eb-55424aede4eb
+
 ## Tech Stack
 
 - **Frontend**: React for building the user interface.
